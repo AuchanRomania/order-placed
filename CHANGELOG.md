@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Switched to vendor auchan
+
+### Added
+
+- Omniconvert sale event trigger
+
 ## [2.17.0] - 2023-03-14
 
 ### Added

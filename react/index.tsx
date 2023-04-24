@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { useQuery } from 'react-apollo'
 import { useIntl, defineMessages } from 'react-intl'
 import { Helmet, ExtensionPoint, useRuntime } from 'vtex.render-runtime'
@@ -38,6 +38,25 @@ const OrderPlaced: FC = () => {
       orderGroup: runtime.query.og,
     },
   })
+
+  useEffect(() => {
+    if (!data) {
+      return
+    }
+
+    const { value, orderId } = data?.orderGroup?.orders?.[0] ?? {}
+
+    try {
+      (window as any)._mktz.push([
+        '_Goal',
+        'sale',
+        `${value}`,
+        { transaction: `${orderId}` },
+      ])
+    } catch (e) {
+      console.error("Error when trying to send omniconvert sale event for order " + orderId ?? orderGroup)
+    }
+  }, [data])
 
   // render loading skeleton if query is still loading
   if (loading) return <Skeleton />
