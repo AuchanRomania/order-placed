@@ -21,6 +21,7 @@ const CSS_HANDLES = [
 
 const OrderTotal: FC = () => {
   const { items, totals, value: totalValue } = useOrder()
+
   const handles = useCssHandles(CSS_HANDLES)
   const numItems = items.reduce((acc, item) => {
     if (item.parentItemIndex === null && !pungiIDs?.includes(item.id)) {
@@ -31,7 +32,7 @@ const OrderTotal: FC = () => {
 
   const bagsTotal = items.reduce((acc, item) => {
     if (pungiIDs?.includes(item.id)) {
-      return acc + item.price
+      return acc + item.price * item.quantity
     }
     return acc
   }, 0)
