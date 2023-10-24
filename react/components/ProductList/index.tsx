@@ -4,6 +4,7 @@ import { useCssHandles } from 'vtex.css-handles'
 import BundleInfo from './BundleItems'
 import Attachment from './Attachments'
 import Product from './Product'
+import { pungiIDs } from '../../utils/pungi'
 
 interface Props {
   products: OrderItem[]
@@ -12,10 +13,12 @@ interface Props {
 const CSS_HANDLES = ['productList', 'productListItem']
 
 const ProductList: FC<Props> = ({ products }) => {
+  const parsedProds = products?.filter(prod => !pungiIDs?.includes(prod.id))
+
   const handles = useCssHandles(CSS_HANDLES)
   return (
     <ul className={`${handles.productList} w-60-l w-100 list pl0`}>
-      {products.map((product) => (
+      {parsedProds.map((product: OrderItem) => (
         <li
           key={product.id}
           className={`${handles.productListItem} db bb b--muted-4 mb7 pb7`}

@@ -7,6 +7,9 @@ import FormattedPrice from './components/FormattedPrice'
 import { useOrder } from './components/OrderContext'
 import { getTotals } from './utils'
 import TaxInfo from './TaxInfo'
+import { pungiIDs } from './utils/pungi'
+
+const ITEMS_TOTAL_ID = 'Items'
 
 const CSS_HANDLES = [
   'totalListWrapper',
@@ -20,12 +23,36 @@ const OrderTotal: FC = () => {
   const { items, totals, value: totalValue } = useOrder()
   const handles = useCssHandles(CSS_HANDLES)
   const numItems = items.reduce((acc, item) => {
-    if (item.parentItemIndex === null) {
+    if (item.parentItemIndex === null && !pungiIDs?.includes(item.id)) {
       return acc + item.quantity
     }
     return acc
   }, 0)
-  const [newTotals, taxes] = getTotals(totals)
+
+  const bagsTotal = items.reduce((acc, item) => {
+    if (pungiIDs?.includes(item.id)) {
+      return acc + item.price
+    }
+    return acc
+  }, 0)
+
+  const parsedTotals = totals?.map(total => {
+    if (total.id === ITEMS_TOTAL_ID) {
+      return {
+        ...total,
+        value: total.value - bagsTotal
+      }
+    }
+    return total
+  })
+
+  const [newTotals, taxes] = getTotals(parsedTotals)
+
+  newTotals.push({
+    id: 'Fleg',
+    name: 'Fleg & pungi tax',
+    value: bagsTotal
+  })
 
   return (
     <div className={`${handles.totalListWrapper} flex-l justify-end w-100`}>
