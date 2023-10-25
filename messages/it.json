@@ -53,6 +53,7 @@
   "store/summary.shipping": "Consegna",
   "store/summary.shipping.address": "Presso {addressStreet}, {addressNumber}",
   "store/summary.shipping.quantity": "{shippings, plural, one {, in una consegna} other {, diviso in # consegne}}",
+  "store/summary.bagsTax": "Taxa pungi",
   "store/takeaway.header.title": "Take Away",
   "store/warnings.delivery.time": "Il tempo di consegna inizia a decorrere dal momento della conferma del pagamento.",
   "store/warnings.delivery.tracking": "Il codice tracking verrà inviato alla tua mail quando il pacco sarà affidato al corriere.",

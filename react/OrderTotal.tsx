@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { FormattedMessage } from 'react-intl'
 import TranslateTotalizer from 'vtex.totalizer-translator/TranslateTotalizer'
 import { applyModifiers, useCssHandles } from 'vtex.css-handles'
+import { useIntl, defineMessages } from 'react-intl'
 
 import FormattedPrice from './components/FormattedPrice'
 import { useOrder } from './components/OrderContext'
@@ -19,8 +20,13 @@ const CSS_HANDLES = [
   'totalListItemValue',
 ] as const
 
+const messages = defineMessages({
+  bagsTax: { id: 'store/summary.bagsTax' },
+})
+
 const OrderTotal: FC = () => {
   const { items, totals, value: totalValue } = useOrder()
+  const { formatMessage } = useIntl()
 
   const handles = useCssHandles(CSS_HANDLES)
   const numItems = items.reduce((acc, item) => {
@@ -37,7 +43,7 @@ const OrderTotal: FC = () => {
     return acc
   }, 0)
 
-  const parsedTotals = totals?.map(total => {
+  const itemsWithoutBags = totals?.map(total => {
     if (total.id === ITEMS_TOTAL_ID) {
       return {
         ...total,
@@ -47,11 +53,11 @@ const OrderTotal: FC = () => {
     return total
   })
 
-  const [newTotals, taxes] = getTotals(parsedTotals)
+  const [newTotals, taxes] = getTotals(itemsWithoutBags)
 
   newTotals.push({
-    id: 'Fleg',
-    name: 'Fleg & pungi tax',
+    id: 'Bags',
+    name: formatMessage(messages.bagsTax),
     value: bagsTotal
   })
 

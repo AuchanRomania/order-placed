@@ -53,6 +53,7 @@
   "store/summary.shipping": "Doručení",
   "store/summary.shipping.address": "Na adrese {addressStreet}, {addressNumber}",
   "store/summary.shipping.quantity": "{shippings, plural, one {, v jednom balíčku} few {, rozděleno do # balíčků} many {, rozděleno do # balíčku} other {, rozděleno do # balíčků}}",
+  "store/summary.bagsTax": "Taxa pungi",
   "store/takeaway.header.title": "K odnesení",
   "store/warnings.delivery.time": "Dodací lhůta se začíná počítat od okamžiku potvrzení platby.",
   "store/warnings.delivery.tracking": "Po zahájení procesu doručení vám bude na e-mailovou adresu poslán sledovací kód.",

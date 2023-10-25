@@ -53,6 +53,7 @@
   "store/summary.shipping": "Παράδοση",
   "store/summary.shipping.address": "Σε {addressStreet}, {addressNumber}",
   "store/summary.shipping.quantity": "{shippings, plural, one {, σε μία παράδοση} other {, διαχωρισμός σε # παραδόσεις}}",
+  "store/summary.bagsTax": "Taxa pungi",
   "store/takeaway.header.title": "\"Πακέτο\"",
   "store/warnings.delivery.time": "Η περίοδος παράδοσης ξεκινά από την ώρα επιβεβαίωσης της πληρωμής.",
   "store/warnings.delivery.tracking": "Θα αποσταλεί κωδικός παρακολούθησης στο email σας μόλις ξεκινήσει η διαδικασία παράδοσης.",

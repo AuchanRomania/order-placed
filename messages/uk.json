@@ -53,6 +53,7 @@
   "store/summary.shipping": "Доставка",
   "store/summary.shipping.address": "За адресою {addressStreet}, {addressNumber}",
   "store/summary.shipping.quantity": "{shippings, plural, one {, в одній доставці} few {, розбито на # доставки} many {, розбито на # доставок} other {, розбито на # доставок}}",
+  "store/summary.bagsTax": "Taxa pungi",
   "store/takeaway.header.title": "На винос",
   "store/warnings.delivery.time": "Період доставки починає рахуватися з моменту підтвердження оплати.",
   "store/warnings.delivery.tracking": "Номер для відстеження буде надіслано на ваш електронний лист, коли розпочнеться процес доставки.",

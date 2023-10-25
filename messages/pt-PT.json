@@ -53,6 +53,7 @@
     "store/summary.shipping": "A receber",
     "store/summary.shipping.address": "Em {addressStreet}, {addressNumber}",
     "store/summary.shipping.quantity": "{shippings, plural, one {, em uma entrega} other {, separados em # entregas}}",
+    "store/summary.bagsTax": "Taxa pungi",
     "store/takeaway.header.title": "Levar agora",
     "store/warnings.delivery.time": "O prazo de entrega começa a contar só depois da confirmação do pagamento.",
     "store/warnings.delivery.tracking": "Você vai receber o código de rastreio do pedido assim que o processo de envio começar.",

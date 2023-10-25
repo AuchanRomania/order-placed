@@ -53,6 +53,7 @@
   "store/summary.shipping": "配送",
   "store/summary.shipping.address": "{addressStreet}、{addressNumber} 宛",
   "store/summary.shipping.quantity": "{shippings, plural, one {、1 つの配送} other {、 # 回の配送に分割}}",
+  "store/summary.bagsTax": "Taxa pungi",
   "store/takeaway.header.title": "テイクアウェイ",
   "store/warnings.delivery.time": "配送期間は支払いが確認された時から数え始めます。",
   "store/warnings.delivery.tracking": "追跡コードは、配送処理が始まった時にメールで送られます。",

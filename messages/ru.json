@@ -53,6 +53,7 @@
   "store/summary.shipping": "Доставка",
   "store/summary.shipping.address": "Куда {addressStreet}, {addressNumber}",
   "store/summary.shipping.quantity": "{shippings, plural, one {, за одну доставку} few {, разделить на # доставки} many {, разделить на # доставок} other {, разделить на # доставок}}",
+  "store/summary.bagsTax": "Taxa pungi",
   "store/takeaway.header.title": "Самовывоз",
   "store/warnings.delivery.time": "Период доставки начинает отсчитываться с момента подтверждения вашего платежа.",
   "store/warnings.delivery.tracking": "Код отслеживания будет отправлен на вашу электронную почту, когда начнется процесс доставки.",

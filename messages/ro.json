@@ -53,6 +53,7 @@
   "store/summary.shipping": "Livrare",
   "store/summary.shipping.address": "La {addressStreet}, {addressNumber}",
   "store/summary.shipping.quantity": "{shippings, plural, one {, în o livrare} other {, împărțită în # livrări}}",
+  "store/summary.bagsTax": "Taxa pungi",
   "store/takeaway.header.title": "Preluare acasă",
   "store/warnings.delivery.time": "Termenul de livrare începe de la momentul confirmării plății tale.",
   "store/warnings.delivery.tracking": "Vei primi un cod de urmărire prin e-mail atunci când procesul de livrare începe.",

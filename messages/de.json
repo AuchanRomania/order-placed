@@ -53,6 +53,7 @@
   "store/summary.shipping": "Lieferung",
   "store/summary.shipping.address": "Bei {addressStreet}, {addressNumber}",
   "store/summary.shipping.quantity": "{shippings, plural, one {, in einer Lieferung} other {, aufgeteilt in # Lieferungen}}",
+  "store/summary.bagsTax": "Taxa pungi",
   "store/takeaway.header.title": "Mitnehmen",
   "store/warnings.delivery.time": "Die Lieferzeit beginnt ab dem Zeitpunkt der Bestätigung Ihrer Zahlung zu zählen.",
   "store/warnings.delivery.tracking": "Ein Tracking-Code wird an Ihre E-Mail gesendet, wenn der Lieferprozess beginnt.",

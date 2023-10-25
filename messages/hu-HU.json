@@ -53,6 +53,7 @@
   "store/summary.shipping": "Kézbesítés",
   "store/summary.shipping.address": "Itt: {addressStreet}, {addressNumber}",
   "store/summary.shipping.quantity": "{shippings, plural, one {, egy kézbesítés során} other {, # kézbesítés során}}",
+  "store/summary.bagsTax": "Taxa pungi",
   "store/takeaway.header.title": "Elvitel",
   "store/warnings.delivery.time": "A kézbesítési időszak a fizetés visszaigazolásától kezdődik.",
   "store/warnings.delivery.tracking": "A kézbesítési folyamat megkezdésekor követőkódot küldünk az e-mail-címére.",

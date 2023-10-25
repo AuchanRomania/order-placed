@@ -53,6 +53,7 @@
   "store/summary.shipping": "Levering",
   "store/summary.shipping.address": "På {addressStreet}, {addressNumber}",
   "store/summary.shipping.quantity": "{shippings, plural, one {, i én levering} other {, del opp i # leveringer}}",
+  "store/summary.bagsTax": "Taxa pungi",
   "store/takeaway.header.title": "Take away",
   "store/warnings.delivery.time": "Leveringsperioden begynner å telle fra det øyeblikket betalingen er bekreftet.",
   "store/warnings.delivery.tracking": "En sporingskode blir sendt til e-posten din når leveringsprosessen begynner.",

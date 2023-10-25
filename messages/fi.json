@@ -53,6 +53,7 @@
   "store/summary.shipping": "Toimitus",
   "store/summary.shipping.address": "Kohteessa {addressStreet}, {addressNumber}",
   "store/summary.shipping.quantity": "{shippings, plural, one {, yhtenä toimituksena} other {, jaettuna # toimitukseen}}",
+  "store/summary.bagsTax": "Taxa pungi",
   "store/takeaway.header.title": "Nouto",
   "store/warnings.delivery.time": "Toimitusajan laskenta aloitetaan siitä hetkestä, kun maksusi hyväksytään.",
   "store/warnings.delivery.tracking": "Sähköpostiisi lähetetään seurantakoodi toimitusprosessin alkaessa.",

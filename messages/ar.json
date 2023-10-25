@@ -53,6 +53,7 @@
   "store/summary.shipping": "التسليم",
   "store/summary.shipping.address": "في العنوان {addressStreet}، {addressNumber}",
   "store/summary.shipping.quantity": "{shippings, plural, one {باستلام واحد} other {، تقسيم إلى # استلامات}}",
+  "store/summary.bagsTax": "Taxa pungi",
   "store/takeaway.header.title": "للأخذ بعيدًا",
   "store/warnings.delivery.time": "تبدأ فترة التسليم في العد من لحظة تأكيد الدفع الخاص بك.",
   "store/warnings.delivery.tracking": "سيتم إرسال رمز تتبع إلى بريدك الإلكتروني عندما تبدأ عملية التسليم.",

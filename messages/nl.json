@@ -53,6 +53,7 @@
   "store/summary.shipping": "Levering",
   "store/summary.shipping.address": "Bij {addressStreet}, {addressNumber}",
   "store/summary.shipping.quantity": "{shippings, plural, one {, in een levering} other {, verdeel in # leveringen}}",
+  "store/summary.bagsTax": "Taxa pungi",
   "store/takeaway.header.title": "Afhalen",
   "store/warnings.delivery.time": "De leveringstermijn begint te tellen vanaf het moment dat uw betaling is bevestigd.",
   "store/warnings.delivery.tracking": "Een traceercode wordt naar uw e-mail gestuurd wanneer het leveringsproces begint.",

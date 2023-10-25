@@ -53,6 +53,7 @@
   "store/summary.shipping": "Dostawa",
   "store/summary.shipping.address": "W {addressStreet}, {addressNumber}",
   "store/summary.shipping.quantity": "{shippings, plural, one {, w jednej dostawie} other {, podziel na # dostawy}}",
+  "store/summary.bagsTax": "Taxa pungi",
   "store/takeaway.header.title": "Na wynos",
   "store/warnings.delivery.time": "Termin dostawy zaczyna się liczyć od momentu potwierdzenia Twojej płatności.",
   "store/warnings.delivery.tracking": "Kod do śledzenia zostanie wysłany na e-mail, gdy rozpocznie się proces dostawy.",

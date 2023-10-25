@@ -53,6 +53,7 @@
   "store/summary.shipping": "Delivery",
   "store/summary.shipping.address": "At {addressStreet}, {addressNumber}",
   "store/summary.shipping.quantity": "{shippings, plural, one {, in one delivery} other {, split into # deliveries}}",
+  "store/summary.bagsTax": "Bags tax",
   "store/takeaway.header.title": "Take Away",
   "store/warnings.delivery.time": "The delivery period starts to count from the moment your payment is confirmed.",
   "store/warnings.delivery.tracking": "A tracking code will be sent to your email when the delivery process begins.",
