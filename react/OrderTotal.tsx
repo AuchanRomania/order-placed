@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import TranslateTotalizer from 'vtex.totalizer-translator/TranslateTotalizer'
 import { applyModifiers, useCssHandles } from 'vtex.css-handles'
@@ -8,9 +8,11 @@ import FormattedPrice from './components/FormattedPrice'
 import { useOrder } from './components/OrderContext'
 import { getTotals } from './utils'
 import TaxInfo from './TaxInfo'
-import { pungiIDs } from './utils/pungi'
+import { Tooltip } from 'vtex.styleguide'
+import InfoTooltip from './Icons/InfoTooltip'
 
 const ITEMS_TOTAL_ID = 'Items'
+const BAGS_ID = 'Bags'
 
 const CSS_HANDLES = [
   'totalListWrapper',
@@ -18,26 +20,42 @@ const CSS_HANDLES = [
   'totalListItem',
   'totalListItemLabel',
   'totalListItemValue',
+  'bagsIcon',
 ] as const
 
 const messages = defineMessages({
   bagsTax: { id: 'store/summary.bagsTax' },
+  tooltipContent: { id: 'store/summary.tooltipContent' },
 })
 
 const OrderTotal: FC = () => {
+  const [bagsIDs, setBagsIDs] = useState([''])
   const { items, totals, value: totalValue } = useOrder()
   const { formatMessage } = useIntl()
 
+  useEffect(() => {
+    const getSettings = () => {
+      fetch('/_v/private/api/cart-bags-manager/app-settings').then(async (data) => {
+        const settingsData = await data?.json()
+        const settingsIDs: string[] = Object.values(settingsData?.data)
+
+        setBagsIDs(settingsIDs)
+      })
+    }
+
+    getSettings()
+  }, [])
+
   const handles = useCssHandles(CSS_HANDLES)
   const numItems = items.reduce((acc, item) => {
-    if (item.parentItemIndex === null && !pungiIDs?.includes(item.id)) {
+    if (item.parentItemIndex === null && !bagsIDs?.includes(item.id)) {
       return acc + item.quantity
     }
     return acc
   }, 0)
 
   const bagsTotal = items.reduce((acc, item) => {
-    if (pungiIDs?.includes(item.id)) {
+    if (bagsIDs?.includes(item.id)) {
       return acc + item.price * item.quantity
     }
     return acc
@@ -56,7 +74,7 @@ const OrderTotal: FC = () => {
   const [newTotals, taxes] = getTotals(itemsWithoutBags)
 
   newTotals.push({
-    id: 'Bags',
+    id: BAGS_ID,
     name: formatMessage(messages.bagsTax),
     value: bagsTotal
   })
@@ -81,6 +99,13 @@ const OrderTotal: FC = () => {
             >
               <span className={`${handles.totalListItemLabel} flex`}>
                 <TranslateTotalizer totalizer={total} />
+                {total.id === BAGS_ID &&
+                  <div className={`${handles.bagsIcon} ml2`}>
+                    <Tooltip label={formatMessage(messages.tooltipContent)}>
+                      <span><InfoTooltip /></span>
+                    </Tooltip>
+                  </div>
+                }
                 {total.id === 'Items' && ` (${numItems})`}
                 {total.id === 'Tax' && taxes.length > 0 && (
                   <div className="ml2 mt1">
