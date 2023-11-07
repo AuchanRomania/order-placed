@@ -73,11 +73,13 @@ const OrderTotal: FC = () => {
 
   const [newTotals, taxes] = getTotals(itemsWithoutBags)
 
-  newTotals.push({
-    id: BAGS_ID,
-    name: formatMessage(messages.bagsTax),
-    value: bagsTotal
-  })
+  if (bagsTotal > 0) {
+    newTotals.push({
+      id: BAGS_ID,
+      name: formatMessage(messages.bagsTax),
+      value: bagsTotal
+    })
+  }
 
   return (
     <div className={`${handles.totalListWrapper} flex-l justify-end w-100`}>
