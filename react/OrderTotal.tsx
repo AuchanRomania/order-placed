@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC } from 'react'
 import { FormattedMessage } from 'react-intl'
 import TranslateTotalizer from 'vtex.totalizer-translator/TranslateTotalizer'
 import { applyModifiers, useCssHandles } from 'vtex.css-handles'
@@ -10,6 +10,7 @@ import { getTotals } from './utils'
 import TaxInfo from './TaxInfo'
 import { Tooltip } from 'vtex.styleguide'
 import InfoTooltip from './Icons/InfoTooltip'
+import useGetBagsSgrIDs from './hooks/useGetBagsSgrIDs'
 
 const ITEMS_TOTAL_ID = 'Items'
 const BAGS_ID = 'Bags'
@@ -31,27 +32,9 @@ const messages = defineMessages({
 })
 
 const OrderTotal: FC = () => {
-  const [bagsIDs, setBagsIDs] = useState([''])
-  const [sgrIDs, setSgrIDs] = useState([''])
+  const { bagsIDs, sgrIDs } = useGetBagsSgrIDs()
   const { items, totals, value: totalValue } = useOrder()
   const { formatMessage } = useIntl()
-
-  useEffect(() => {
-    const getSettings = () => {
-      fetch('/_v/private/api/cart-bags-manager/app-settings').then(async (data) => {
-        const settingsResult = await data?.json()
-        const settingsData = settingsResult?.data
-
-        const bagsIdList: string[] = Object.values(settingsData?.bagsSettings)
-        const sgrIdList = [...settingsData?.sgrSettings?.aluminumCanProducts?.skuIds, ...settingsData?.sgrSettings?.plasticBottleProducts?.skuIds, ...settingsData?.sgrSettings?.glassBottleProducts?.skuIds]
-
-        setBagsIDs(bagsIdList)
-        setSgrIDs(sgrIdList)
-      })
-    }
-
-    getSettings()
-  }, [])
 
   const handles = useCssHandles(CSS_HANDLES)
   const numItems = items.reduce((acc, item) => {
@@ -107,8 +90,6 @@ const OrderTotal: FC = () => {
       value: bagsTotal
     })
   }
-
-  console.log("🚀 ~ file: OrderTotal.tsx:88 ~ newTotals:", newTotals)
 
   return (
     <div className={`${handles.totalListWrapper} flex-l justify-end w-100`}>

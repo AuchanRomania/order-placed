@@ -4,6 +4,7 @@ import { useCssHandles } from 'vtex.css-handles'
 import BundleInfo from './BundleItems'
 import Attachment from './Attachments'
 import Product from './Product'
+import useGetBagsSgrIDs from '../../hooks/useGetBagsSgrIDs'
 
 interface Props {
   products: OrderItem[]
@@ -12,6 +13,14 @@ interface Props {
 const CSS_HANDLES = ['productList', 'productListItem']
 
 const ProductList: FC<Props> = ({ products }) => {
+  const { bagsIDs } = useGetBagsSgrIDs()
+
+  // Put all the bags at the end of the products list
+  for (let i = 0; i < products?.length; i++) {
+    if (bagsIDs?.includes(products[i]?.id)) {
+      products.push(products.splice(i, 1)[0])
+    }
+  }
 
   const handles = useCssHandles(CSS_HANDLES)
   return (
