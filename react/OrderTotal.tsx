@@ -13,6 +13,7 @@ import InfoTooltip from './Icons/InfoTooltip'
 
 const ITEMS_TOTAL_ID = 'Items'
 const BAGS_ID = 'Bags'
+const SGR_ID = 'SGR'
 
 const CSS_HANDLES = [
   'totalListWrapper',
@@ -30,16 +31,21 @@ const messages = defineMessages({
 
 const OrderTotal: FC = () => {
   const [bagsIDs, setBagsIDs] = useState([''])
+  const [sgrIDs, setSgrIDs] = useState([''])
   const { items, totals, value: totalValue } = useOrder()
   const { formatMessage } = useIntl()
 
   useEffect(() => {
     const getSettings = () => {
       fetch('/_v/private/api/cart-bags-manager/app-settings').then(async (data) => {
-        const settingsData = await data?.json()
-        const settingsIDs: string[] = Object.values(settingsData?.data)
+        const settingsResult = await data?.json()
+        const settingsData = settingsResult?.data
 
-        setBagsIDs(settingsIDs)
+        const bagsIdList: string[] = Object.values(settingsData?.bagsSettings)
+        const sgrIdList = [...settingsData?.sgrSettings?.aluminumCanProducts?.skuIds, ...settingsData?.sgrSettings?.plasticBottleProducts?.skuIds, ...settingsData?.sgrSettings?.glassBottleProducts?.skuIds]
+
+        setBagsIDs(bagsIdList)
+        setSgrIDs(sgrIdList)
       })
     }
 
@@ -48,7 +54,7 @@ const OrderTotal: FC = () => {
 
   const handles = useCssHandles(CSS_HANDLES)
   const numItems = items.reduce((acc, item) => {
-    if (item.parentItemIndex === null && !bagsIDs?.includes(item.id)) {
+    if (item.parentItemIndex === null && !bagsIDs?.includes(item.id) && !sgrIDs?.includes(item.id)) {
       return acc + item.quantity
     }
     return acc
@@ -61,23 +67,38 @@ const OrderTotal: FC = () => {
     return acc
   }, 0)
 
-  const itemsWithoutBags = totals?.map(total => {
+  const sgrTotal = items.reduce((acc, item) => {
+    if (sgrIDs?.includes(item.id)) {
+      return acc + item.price * item.quantity
+    }
+    return acc
+  }, 0)
+
+  const itemsWithoutBagsOrSgr = totals?.map(total => {
     if (total.id === ITEMS_TOTAL_ID) {
       return {
         ...total,
-        value: total.value - bagsTotal
+        value: total.value - bagsTotal - sgrTotal
       }
     }
     return total
   })
 
-  const [newTotals, taxes] = getTotals(itemsWithoutBags)
+  const [newTotals, taxes] = getTotals(itemsWithoutBagsOrSgr)
 
   if (bagsTotal > 0) {
     newTotals.push({
       id: BAGS_ID,
       name: formatMessage(messages.bagsTax),
       value: bagsTotal
+    })
+  }
+
+  if (sgrTotal > 0) {
+    newTotals.push({
+      id: SGR_ID,
+      name: "Garantie",
+      value: sgrTotal
     })
   }
 
@@ -101,9 +122,9 @@ const OrderTotal: FC = () => {
             >
               <span className={`${handles.totalListItemLabel} flex`}>
                 <TranslateTotalizer totalizer={total} />
-                {total.id === BAGS_ID &&
+                {(total.id === BAGS_ID || total.id === SGR_ID) &&
                   <div className={`${handles.bagsIcon} ml2`}>
-                    <Tooltip label={formatMessage(messages.tooltipContent)}>
+                    <Tooltip label={total.id === BAGS_ID ? formatMessage(messages.tooltipContent) : 'Garantie'}>
                       <span><InfoTooltip /></span>
                     </Tooltip>
                   </div>
