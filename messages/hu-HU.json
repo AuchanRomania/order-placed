@@ -55,6 +55,7 @@
   "store/summary.shipping.quantity": "{shippings, plural, one {, egy kézbesítés során} other {, # kézbesítés során}}",
   "store/summary.bagsTax": "Estimare cost ambalare",
   "store/summary.tooltipContent": "Cost estimat in funcție de produsele din cos. După procesarea comenzii, vei gasi costul final si detalii (tipuri de ambalaj si numar) in mail si contul tau.",
+  "store/summary.sgrTax": "Garantie",
   "store/takeaway.header.title": "Elvitel",
   "store/warnings.delivery.time": "A kézbesítési időszak a fizetés visszaigazolásától kezdődik.",
   "store/warnings.delivery.tracking": "A kézbesítési folyamat megkezdésekor követőkódot küldünk az e-mail-címére.",

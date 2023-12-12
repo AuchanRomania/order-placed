@@ -27,6 +27,7 @@ const CSS_HANDLES = [
 const messages = defineMessages({
   bagsTax: { id: 'store/summary.bagsTax' },
   tooltipContent: { id: 'store/summary.tooltipContent' },
+  sgrTax: { id: 'store/summary.sgrTax' }
 })
 
 const OrderTotal: FC = () => {
@@ -86,6 +87,19 @@ const OrderTotal: FC = () => {
 
   const [newTotals, taxes] = getTotals(itemsWithoutBagsOrSgr)
 
+  if (sgrTotal > 0) {
+    const sgrTotalObject = {
+      id: SGR_ID,
+      name: formatMessage(messages.sgrTax),
+      value: sgrTotal
+    }
+
+    const taxPosition = newTotals.findIndex((total) => total?.id === 'Tax')
+    const indexToPush = taxPosition > 0 ? taxPosition : 0
+
+    newTotals.splice(indexToPush, 0, sgrTotalObject)
+  }
+
   if (bagsTotal > 0) {
     newTotals.push({
       id: BAGS_ID,
@@ -94,13 +108,7 @@ const OrderTotal: FC = () => {
     })
   }
 
-  if (sgrTotal > 0) {
-    newTotals.push({
-      id: SGR_ID,
-      name: "Garantie",
-      value: sgrTotal
-    })
-  }
+  console.log("🚀 ~ file: OrderTotal.tsx:88 ~ newTotals:", newTotals)
 
   return (
     <div className={`${handles.totalListWrapper} flex-l justify-end w-100`}>
@@ -122,9 +130,9 @@ const OrderTotal: FC = () => {
             >
               <span className={`${handles.totalListItemLabel} flex`}>
                 <TranslateTotalizer totalizer={total} />
-                {(total.id === BAGS_ID || total.id === SGR_ID) &&
+                {(total.id === BAGS_ID) &&
                   <div className={`${handles.bagsIcon} ml2`}>
-                    <Tooltip label={total.id === BAGS_ID ? formatMessage(messages.tooltipContent) : 'Garantie'}>
+                    <Tooltip label={formatMessage(messages.tooltipContent)}>
                       <span><InfoTooltip /></span>
                     </Tooltip>
                   </div>
