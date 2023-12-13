@@ -32,6 +32,9 @@ const useGetBagsSgrIDs = () => {
         }
 
         setIsLoading(false)
+      }).catch((e) => {
+        console.error('fetch app setting error:', e)
+        setIsLoading(false)
       })
     }
 
