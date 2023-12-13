@@ -29,12 +29,14 @@ const useGetBagsSgrIDs = () => {
         if (isMounted) {
           setBagsIDs(bagsIdList)
           setSgrIDs(sgrIdList)
+          setIsLoading(false)
         }
 
-        setIsLoading(false)
       }).catch((e) => {
         console.error('fetch app setting error:', e)
-        setIsLoading(false)
+        if (isMounted) {
+          setIsLoading(false)
+        }
       })
     }
 
