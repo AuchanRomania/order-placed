@@ -8,7 +8,7 @@ import FormattedPrice from './components/FormattedPrice'
 import { useOrder } from './components/OrderContext'
 import { getTotals } from './utils'
 import TaxInfo from './TaxInfo'
-import { Tooltip } from 'vtex.styleguide'
+import { Tooltip, Spinner } from 'vtex.styleguide'
 import InfoTooltip from './Icons/InfoTooltip'
 import useGetBagsSgrIDs from './hooks/useGetBagsSgrIDs'
 
@@ -21,6 +21,7 @@ const CSS_HANDLES = [
   'totalList',
   'totalListItem',
   'totalListItemLabel',
+  'totalListItemText',
   'totalListItemValue',
   'bagsIcon',
 ] as const
@@ -32,11 +33,16 @@ const messages = defineMessages({
 })
 
 const OrderTotal: FC = () => {
-  const { bagsIDs, sgrIDs } = useGetBagsSgrIDs()
   const { items, totals, value: totalValue } = useOrder()
   const { formatMessage } = useIntl()
-
   const handles = useCssHandles(CSS_HANDLES)
+
+  const { bagsIDs, sgrIDs, isLoading } = useGetBagsSgrIDs()
+
+  if (isLoading) {
+    return <Spinner size={20} />
+  }
+
   const numItems = items.reduce((acc, item) => {
     if (item.parentItemIndex === null && !bagsIDs?.includes(item.id) && !sgrIDs?.includes(item.id)) {
       return acc + item.quantity
@@ -109,12 +115,16 @@ const OrderTotal: FC = () => {
               )} pv3 flex justify-between items-center`}
               key={`${total.id}_${i}`}
             >
-              <span className={`${handles.totalListItemLabel} flex`}>
-                <TranslateTotalizer totalizer={total} />
+              <span className={`${handles.totalListItemLabel} flex items-center`}>
+                <div className={handles.totalListItemText}>
+                  <TranslateTotalizer totalizer={total} />
+                </div>
                 {(total.id === BAGS_ID) &&
                   <div className={`${handles.bagsIcon} ml2`}>
                     <Tooltip label={formatMessage(messages.tooltipContent)}>
-                      <span><InfoTooltip /></span>
+                      <span>
+                        <InfoTooltip />
+                      </span>
                     </Tooltip>
                   </div>
                 }

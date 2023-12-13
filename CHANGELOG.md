@@ -9,4 +9,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- Added subtotals for bags and SGR, reorder bags items. 
 - Auchan vendor release.
