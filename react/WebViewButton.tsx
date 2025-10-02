@@ -19,53 +19,86 @@ const WebViewButton = () => {
       return androidWebView || iosWebView || inAppBrowser
     }
 
+    const injectCss = () => {
+      const css = `
+        [class*="headerMobile"],
+        [class*="footerMobile"],
+        [class*="headerDesktop"],
+        [class*="footerLayout"] {
+          display: none !important;
+          visibility: hidden !important;
+          pointer-events: none !important;
+          height: 0 !important;
+          overflow: hidden !important;
+        }
+      `
+      const style = document.createElement('style')
+      style.innerHTML = css
+      document.head.appendChild(style)
+    }
+
+    const cleanupWebViewElements = () => {
+      const logoLink = document.querySelector<HTMLAnchorElement>(
+        '.vtex-store-components-3-x-logoLink--mobileLogo'
+      )
+      const logoContainer = document.querySelector<HTMLElement>(
+        '.vtex-flex-layout-0-x-flexCol--logoMobile'
+      )
+
+      if (logoLink) {
+        logoLink.removeAttribute('href')
+      }
+
+      if (logoContainer) {
+        logoContainer.style.pointerEvents = 'none'
+      }
+
+      const elementsToRemove = document.querySelectorAll<HTMLElement>(
+        '[class*="headerMobile"], [class*="footerMobile"], [class*="headerDesktop"], [class*="footerLayout"]'
+      )
+
+      elementsToRemove.forEach(element => {
+        try {
+          element.remove()
+        } catch {
+          element.style.setProperty('display', 'none', 'important')
+          element.style.setProperty('visibility', 'hidden', 'important')
+          element.style.setProperty('pointer-events', 'none', 'important')
+          element.style.setProperty('height', '0', 'important')
+          element.style.setProperty('overflow', 'hidden', 'important')
+        }
+      })
+    }
+
     const webView = detectWebView()
     setIsWebView(webView)
 
     if (webView) {
-      const cleanupWebViewElements = () => {
-        const logoLink = document.querySelector<HTMLAnchorElement>(
-          '.vtex-store-components-3-x-logoLink--mobileLogo'
-        )
-        const logoContainer = document.querySelector<HTMLElement>(
-          '.vtex-flex-layout-0-x-flexCol--logoMobile'
-        )
-
-        if (logoLink) {
-          logoLink.removeAttribute('href')
-        }
-
-        if (logoContainer) {
-          logoContainer.style.pointerEvents = 'none'
-        }
-
-        const elementsToRemove = document.querySelectorAll<HTMLElement>(
-          '[class*="headerMobile"], [class*="footerMobile"], [class*="headerDesktop"], [class*="footerLayout"]'
-        )
-
-        elementsToRemove.forEach(element => {
-          element.remove()
-        })
-      }
+      injectCss()
 
       cleanupWebViewElements()
 
-      const observer = new MutationObserver((_, obs) => {
-        const logoLink = document.querySelector<HTMLAnchorElement>(
-          '.vtex-store-components-3-x-logoLink--mobileLogo'
-        )
-        if (logoLink) {
-          cleanupWebViewElements()
-          obs.disconnect()
-        }
+      const observer = new MutationObserver(() => {
+        cleanupWebViewElements()
       })
-
       observer.observe(document.body, {
         childList: true,
         subtree: true,
       })
 
-      return () => observer.disconnect()
+      window.addEventListener('load', cleanupWebViewElements)
+      document.addEventListener('DOMContentLoaded', cleanupWebViewElements)
+      window.addEventListener('popstate', cleanupWebViewElements)
+
+      const interval = setInterval(cleanupWebViewElements, 2000)
+
+      return () => {
+        observer.disconnect()
+        window.removeEventListener('load', cleanupWebViewElements)
+        document.removeEventListener('DOMContentLoaded', cleanupWebViewElements)
+        window.removeEventListener('popstate', cleanupWebViewElements)
+        clearInterval(interval)
+      }
     }
 
     return undefined

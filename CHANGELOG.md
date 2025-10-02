@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+
+### Fixed
+
+- Fix the removal of the footer on mobile iOS webview
+
 ## [0.0.11] - 2025-09-25
 
 ### Changed
