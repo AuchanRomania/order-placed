@@ -9,6 +9,13 @@ const useGetBagsSgrIDs = () => {
     let isMounted = true
 
     const getSettings = () => {
+      if (typeof fetch !== 'function') {
+        if (isMounted) {
+          setIsLoading(false)
+        }
+        return
+      }
+
       fetch('/_v/private/api/cart-bags-manager/app-settings').then(async (data) => {
         const settingsResult = await data?.json()
         const settingsData = settingsResult?.data
@@ -18,7 +25,7 @@ const useGetBagsSgrIDs = () => {
         const sgrSettings = settingsData?.sgrSettings
         let sgrIdList: string[] = []
 
-        Object.keys(sgrSettings).forEach((key) => {
+        Object.keys(sgrSettings ?? {}).forEach((key) => {
           const categorySkuIds = sgrSettings[key]?.skuIds
           if (categorySkuIds?.length) {
             sgrIdList = sgrIdList.concat(categorySkuIds)
