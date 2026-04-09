@@ -8,8 +8,7 @@ import FormattedPrice from './components/FormattedPrice'
 import { useOrder } from './components/OrderContext'
 import { getTotals } from './utils'
 import TaxInfo from './TaxInfo'
-import { Tooltip, Spinner } from 'vtex.styleguide'
-import InfoTooltip from './Icons/InfoTooltip'
+import { Spinner } from 'vtex.styleguide'
 import useGetBagsSgrIDs from './hooks/useGetBagsSgrIDs'
 import { breakdownFromTotal, DeliveryMethod } from './utils/shippingBreakdown'
 
@@ -24,12 +23,10 @@ const CSS_HANDLES = [
   'totalListItem',
   'totalListItemLabel',
   'totalListItemValue',
-  'bagsIcon',
 ] as const
 
 const messages = defineMessages({
   bagsTax: { id: 'store/summary.bagsTax' },
-  tooltipContent: { id: 'store/summary.tooltipContent' },
   sgrTax: { id: 'store/summary.sgrTax' },
   extraWeightFee: {
     id: 'store/summary.extraWeightFee',
@@ -162,15 +159,6 @@ const OrderTotal: FC = () => {
                 {[EXTRA_WEIGHT_ID].includes(total.id)
                   ? total.name
                   : <TranslateTotalizer totalizer={total} />}
-                {(total.id === BAGS_ID) &&
-                  <div className={`${handles.bagsIcon} ml2`}>
-                    <Tooltip label={formatMessage(messages.tooltipContent)}>
-                      <span>
-                        <InfoTooltip />
-                      </span>
-                    </Tooltip>
-                  </div>
-                }
                 {total.id === 'Items' && ` (${numItems})`}
                 {total.id === 'Tax' && taxes.length > 0 && (
                   <div className="ml2 mt1">

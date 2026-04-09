@@ -10,6 +10,9 @@ export type DeliveryMethod = "delivery" | "pickup-in-point";
 
 const DELIVERY_BY_TOTAL: Record<string, ShippingBreakdown> = {
   "0": { baseShipping: 1999, extraWeight: 0, bags: 0, freeShipping: true },
+
+  "1900": { baseShipping: 1999, extraWeight: 500, bags: 499, freeShipping: false },
+
   "499": { baseShipping: 1999, extraWeight: 0, bags: 499, freeShipping: true },
   "500": { baseShipping: 1999, extraWeight: 500, bags: 0, freeShipping: true },
   "999": { baseShipping: 1999, extraWeight: 500, bags: 499, freeShipping: true },
