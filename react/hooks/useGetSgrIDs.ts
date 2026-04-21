@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 
 const useGetBagsSgrIDs = () => {
-  const [bagsIDs, setBagsIDs] = useState<string[]>()
   const [sgrIDs, setSgrIDs] = useState<string[]>()
   const [isLoading, setIsLoading] = useState(true)
 
@@ -16,11 +15,10 @@ const useGetBagsSgrIDs = () => {
         return
       }
 
-      fetch('/_v/private/api/cart-bags-manager/app-settings').then(async (data) => {
+      fetch('/auchan/v1/cart-manager/app-settings').then(async (data) => {
         const settingsResult = await data?.json()
         const settingsData = settingsResult?.data
 
-        const bagsIdList: string[] = Object.values(settingsData?.bagsSettings)
 
         const sgrSettings = settingsData?.sgrSettings
         let sgrIdList: string[] = []
@@ -34,7 +32,6 @@ const useGetBagsSgrIDs = () => {
 
 
         if (isMounted) {
-          setBagsIDs(bagsIdList)
           setSgrIDs(sgrIdList)
           setIsLoading(false)
         }
@@ -54,7 +51,7 @@ const useGetBagsSgrIDs = () => {
     }
   }, [])
 
-  return { bagsIDs, sgrIDs, isLoading }
+  return { sgrIDs, isLoading }
 }
 
 export default useGetBagsSgrIDs

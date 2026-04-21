@@ -9,7 +9,7 @@ import { useOrder } from './components/OrderContext'
 import { getTotals } from './utils'
 import TaxInfo from './TaxInfo'
 import { Spinner } from 'vtex.styleguide'
-import useGetBagsSgrIDs from './hooks/useGetBagsSgrIDs'
+import useGetBagsSgrIDs from './hooks/useGetSgrIDs'
 import { breakdownFromTotal, DeliveryMethod } from './utils/shippingBreakdown'
 
 const ITEMS_TOTAL_ID = 'Items'
@@ -39,25 +39,19 @@ const OrderTotal: FC = () => {
   const { formatMessage } = useIntl()
   const handles = useCssHandles(CSS_HANDLES)
 
-  const { bagsIDs, sgrIDs, isLoading } = useGetBagsSgrIDs()
+  const { sgrIDs, isLoading } = useGetBagsSgrIDs()
 
   if (isLoading) {
     return <Spinner size={20} />
   }
 
   const numItems = items.reduce((acc, item) => {
-    if (item.parentItemIndex === null && !bagsIDs?.includes(item.id) && !sgrIDs?.includes(item.id)) {
+    if (item.parentItemIndex === null && !sgrIDs?.includes(item.id)) {
       return acc + item.quantity
     }
     return acc
   }, 0)
 
-  const bagsTotalFromItems = items.reduce((acc, item) => {
-    if (bagsIDs?.includes(item.id)) {
-      return acc + item.price * item.quantity
-    }
-    return acc
-  }, 0)
 
   const deliveryMethod: DeliveryMethod =
     deliveryParcels && deliveryParcels.length > 0 ? 'delivery' : 'pickup-in-point'
@@ -72,7 +66,7 @@ const OrderTotal: FC = () => {
   const shippingBreakdown = canApplyBreakdown
     ? breakdownFromTotal(shippingTotal, deliveryMethod)
     : undefined
-  const bagsTotal = shippingBreakdown?.bags ?? bagsTotalFromItems
+  const bagsTotal = shippingBreakdown?.bags ?? 0
 
   const sgrTotal = items.reduce((acc, item) => {
     if (sgrIDs?.includes(item.id)) {
