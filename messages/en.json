@@ -53,7 +53,7 @@
   "store/summary.shipping": "Delivery",
   "store/summary.shipping.address": "At {addressStreet}, {addressNumber}",
   "store/summary.shipping.quantity": "{shippings, plural, one {, in one delivery} other {, split into # deliveries}}",
-  "store/summary.bagsTax": "Cost de ambalare",
+  "store/summary.bagsTax": "Cost ambalare",
   "store/summary.sgrTax": "Garantie",
   "store/summary.extraWeightFee": "Extra weight fee",
   "store/summary.freeShipping": "Free shipping",

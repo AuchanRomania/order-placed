@@ -62,7 +62,7 @@ const OrderTotal: FC = () => {
     0
   )
   const canApplyBreakdown =
-    typeof itemsTotalizer !== 'number' || itemsTotalizer === calculatedItemsTotal
+    itemsTotalizer === 0 || itemsTotalizer === calculatedItemsTotal
   const shippingBreakdown = canApplyBreakdown
     ? breakdownFromTotal(shippingTotal, deliveryMethod)
     : undefined

@@ -53,7 +53,7 @@
   "store/summary.shipping": "Livrare",
   "store/summary.shipping.address": "La {addressStreet}, {addressNumber}",
   "store/summary.shipping.quantity": "{shippings, plural, one {, în o livrare} other {, împărțită în # livrări}}",
-  "store/summary.bagsTax": "Cost de ambalare",
+  "store/summary.bagsTax": "Cost ambalare",
   "store/summary.extraWeightFee": "Cost greutate",
   "store/summary.sgrTax": "Garantie",
   "store/takeaway.header.title": "Preluare acasă",
