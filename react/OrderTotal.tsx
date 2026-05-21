@@ -93,7 +93,7 @@ const OrderTotal: FC = () => {
     if (shippingIndex >= 0) {
       newTotals.splice(shippingIndex, 1, {
         ...newTotals[shippingIndex],
-        value: shippingBreakdown.baseShipping,
+        value: shippingBreakdown.freeShipping ? 0 : shippingBreakdown.baseShipping,
       })
 
       const shippingDetails = [
