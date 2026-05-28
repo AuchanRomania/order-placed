@@ -4,7 +4,7 @@ import { useCssHandles } from 'vtex.css-handles'
 import BundleInfo from './BundleItems'
 import Attachment from './Attachments'
 import Product from './Product'
-import useGetBagsSgrIDs from '../../hooks/useGetBagsSgrIDs'
+import useGetBagsSgrIDs from '../../hooks/useGetSgrIDs'
 
 interface Props {
   products: OrderItem[]
@@ -14,16 +14,16 @@ const CSS_HANDLES = ['productList', 'productListItem']
 
 const ProductList: FC<Props> = ({ products }) => {
   const handles = useCssHandles(CSS_HANDLES)
-  const { bagsIDs, sgrIDs, isLoading } = useGetBagsSgrIDs()
+  const { sgrIDs, isLoading } = useGetBagsSgrIDs()
 
   if (isLoading) {
     return null
   }
-  const prodsWithoutBagsOrSgr = products?.filter(prod => !bagsIDs?.includes(prod.id) && !sgrIDs?.includes(prod.id))
+  const prodsWithoutSgr = products?.filter(prod => !sgrIDs?.includes(prod.id))
 
   return (
     <ul className={`${handles.productList} w-60-l w-100 list pl0`}>
-      {prodsWithoutBagsOrSgr.map((product: OrderItem, index: number) => {
+      {prodsWithoutSgr.map((product: OrderItem, index: number) => {
         return (
           <li
             key={`${product.id}-${index}`}

@@ -34,6 +34,10 @@ export const Tooltip: FC = (props) => {
   return <div data-testid="tooltip">{props.children}</div>
 }
 
+export const Spinner: FC = () => {
+  return <div data-testid="spinner">Spinner</div>
+}
+
 export const IconInfo: FC = (props) => {
   return <div data-testid="icon-info">{props.children}</div>
 }

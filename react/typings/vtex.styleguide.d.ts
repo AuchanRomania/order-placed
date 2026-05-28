@@ -6,5 +6,6 @@ declare module 'vtex.styleguide' {
   export const IconCaretUp
   export const IconInfo
   export const PageBlock
+  export const Spinner
   export const Tooltip
 }

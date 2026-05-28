@@ -1,14 +1,14 @@
 {
   "vendor": "auchan",
   "name": "order-placed",
-  "version": "0.0.12",
+  "version": "0.1.0-beta.6",
   "title": "Order Placed",
   "description": "",
   "registries": [
     "smartcheckout"
   ],
   "scripts": {
-    "postreleasy": "vtex publish --public"
+    "postreleasy": "vtex publish --verbose"
   },
   "builders": {
     "react": "3.x",

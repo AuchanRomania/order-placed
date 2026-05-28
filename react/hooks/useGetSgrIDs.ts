@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 
 const useGetBagsSgrIDs = () => {
-  const [bagsIDs, setBagsIDs] = useState<string[]>()
   const [sgrIDs, setSgrIDs] = useState<string[]>()
   const [isLoading, setIsLoading] = useState(true)
 
@@ -9,16 +8,22 @@ const useGetBagsSgrIDs = () => {
     let isMounted = true
 
     const getSettings = () => {
-      fetch('/_v/private/api/cart-bags-manager/app-settings').then(async (data) => {
+      if (typeof fetch !== 'function') {
+        if (isMounted) {
+          setIsLoading(false)
+        }
+        return
+      }
+
+      fetch('/auchan/v1/cart-manager/app-settings').then(async (data) => {
         const settingsResult = await data?.json()
         const settingsData = settingsResult?.data
 
-        const bagsIdList: string[] = Object.values(settingsData?.bagsSettings)
 
         const sgrSettings = settingsData?.sgrSettings
         let sgrIdList: string[] = []
 
-        Object.keys(sgrSettings).forEach((key) => {
+        Object.keys(sgrSettings ?? {}).forEach((key) => {
           const categorySkuIds = sgrSettings[key]?.skuIds
           if (categorySkuIds?.length) {
             sgrIdList = sgrIdList.concat(categorySkuIds)
@@ -27,7 +32,6 @@ const useGetBagsSgrIDs = () => {
 
 
         if (isMounted) {
-          setBagsIDs(bagsIdList)
           setSgrIDs(sgrIdList)
           setIsLoading(false)
         }
@@ -47,7 +51,7 @@ const useGetBagsSgrIDs = () => {
     }
   }, [])
 
-  return { bagsIDs, sgrIDs, isLoading }
+  return { sgrIDs, isLoading }
 }
 
 export default useGetBagsSgrIDs

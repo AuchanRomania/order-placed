@@ -8,13 +8,14 @@ import FormattedPrice from './components/FormattedPrice'
 import { useOrder } from './components/OrderContext'
 import { getTotals } from './utils'
 import TaxInfo from './TaxInfo'
-import { Tooltip, Spinner } from 'vtex.styleguide'
-import InfoTooltip from './Icons/InfoTooltip'
-import useGetBagsSgrIDs from './hooks/useGetBagsSgrIDs'
+import { Spinner } from 'vtex.styleguide'
+import useGetBagsSgrIDs from './hooks/useGetSgrIDs'
+import { breakdownFromTotal, DeliveryMethod } from './utils/shippingBreakdown'
 
 const ITEMS_TOTAL_ID = 'Items'
 const BAGS_ID = 'Bags'
 const SGR_ID = 'SGR'
+const EXTRA_WEIGHT_ID = 'ExtraWeight'
 
 const CSS_HANDLES = [
   'totalListWrapper',
@@ -22,39 +23,50 @@ const CSS_HANDLES = [
   'totalListItem',
   'totalListItemLabel',
   'totalListItemValue',
-  'bagsIcon',
 ] as const
 
 const messages = defineMessages({
   bagsTax: { id: 'store/summary.bagsTax' },
-  tooltipContent: { id: 'store/summary.tooltipContent' },
-  sgrTax: { id: 'store/summary.sgrTax' }
+  sgrTax: { id: 'store/summary.sgrTax' },
+  extraWeightFee: {
+    id: 'store/summary.extraWeightFee',
+    defaultMessage: 'Extra weight fee',
+  }
 })
 
 const OrderTotal: FC = () => {
-  const { items, totals, value: totalValue } = useOrder()
+  const { items, totals, value: totalValue, deliveryParcels } = useOrder()
   const { formatMessage } = useIntl()
   const handles = useCssHandles(CSS_HANDLES)
 
-  const { bagsIDs, sgrIDs, isLoading } = useGetBagsSgrIDs()
+  const { sgrIDs, isLoading } = useGetBagsSgrIDs()
 
   if (isLoading) {
     return <Spinner size={20} />
   }
 
   const numItems = items.reduce((acc, item) => {
-    if (item.parentItemIndex === null && !bagsIDs?.includes(item.id) && !sgrIDs?.includes(item.id)) {
+    if (item.parentItemIndex === null && !sgrIDs?.includes(item.id)) {
       return acc + item.quantity
     }
     return acc
   }, 0)
 
-  const bagsTotal = items.reduce((acc, item) => {
-    if (bagsIDs?.includes(item.id)) {
-      return acc + item.price * item.quantity
-    }
-    return acc
-  }, 0)
+
+  const deliveryMethod: DeliveryMethod =
+    deliveryParcels && deliveryParcels.length > 0 ? 'delivery' : 'pickup-in-point'
+  const shippingTotal = totals.find((total) => total.id === 'Shipping')?.value ?? 0
+  const itemsTotalizer = totals.find((total) => total.id === ITEMS_TOTAL_ID)?.value
+  const calculatedItemsTotal = items.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  )
+  const canApplyBreakdown =
+    itemsTotalizer === 0 || itemsTotalizer === calculatedItemsTotal
+  const shippingBreakdown = canApplyBreakdown
+    ? breakdownFromTotal(shippingTotal, deliveryMethod)
+    : undefined
+  const bagsTotal = shippingBreakdown?.bags ?? 0
 
   const sgrTotal = items.reduce((acc, item) => {
     if (sgrIDs?.includes(item.id)) {
@@ -67,13 +79,36 @@ const OrderTotal: FC = () => {
     if (total.id === ITEMS_TOTAL_ID) {
       return {
         ...total,
-        value: total.value - bagsTotal - sgrTotal
+        value: total.value - sgrTotal
       }
     }
     return total
   })
 
   const [newTotals, taxes] = getTotals(itemsWithoutBagsOrSgr)
+
+  if (shippingBreakdown) {
+    const shippingIndex = newTotals.findIndex((total) => total.id === 'Shipping')
+
+    if (shippingIndex >= 0) {
+      newTotals.splice(shippingIndex, 1, {
+        ...newTotals[shippingIndex],
+        value: shippingBreakdown.freeShipping ? 0 : shippingBreakdown.baseShipping,
+      })
+
+      const shippingDetails = [
+        {
+          id: EXTRA_WEIGHT_ID,
+          name: formatMessage(messages.extraWeightFee),
+          value: shippingBreakdown.extraWeight,
+        },
+      ].filter((detail) => detail.value > 0)
+
+      if (shippingDetails.length > 0) {
+        newTotals.splice(shippingIndex + 1, 0, ...shippingDetails)
+      }
+    }
+  }
 
   if (sgrTotal > 0) {
     const sgrTotalObject = {
@@ -115,16 +150,9 @@ const OrderTotal: FC = () => {
               key={`${total.id}_${i}`}
             >
               <span className={`${handles.totalListItemLabel} flex`}>
-                <TranslateTotalizer totalizer={total} />
-                {(total.id === BAGS_ID) &&
-                  <div className={`${handles.bagsIcon} ml2`}>
-                    <Tooltip label={formatMessage(messages.tooltipContent)}>
-                      <span>
-                        <InfoTooltip />
-                      </span>
-                    </Tooltip>
-                  </div>
-                }
+                {[EXTRA_WEIGHT_ID].includes(total.id)
+                  ? total.name
+                  : <TranslateTotalizer totalizer={total} />}
                 {total.id === 'Items' && ` (${numItems})`}
                 {total.id === 'Tax' && taxes.length > 0 && (
                   <div className="ml2 mt1">
